@@ -6,17 +6,15 @@
 <title>SHRI DRIFT | Loyalty Club</title>
 <style>
 :root {
-  --black: #0b0b0b;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #0b0b0b 70%);
-  --white: #ffffff;
-  --grey: #888888;
-  --light-grey: #b3b3b3;
-  --gold: #D4AF37;
-  --gold-light: #f3e5ab;
-  --gold-dark: #aa8c2c;
-  --panel: rgba(20, 20, 20, 0.85);
-  --border: rgba(212, 175, 55, 0.2);
-  --border-focus: rgba(212, 175, 55, 0.8);
+  --bg-color: #0f0e0d;
+  --panel-bg: #161514;
+  --gold: #C5A059;
+  --gold-light: #DFBF7A;
+  --gold-dark: #9E7E3B;
+  --text-main: #F4F2EE;
+  --text-muted: #9E9B96;
+  --border-subtle: rgba(197, 160, 89, 0.25);
+  --border-focus: rgba(197, 160, 89, 0.8);
 }
 
 *, *::before, *::after {
@@ -25,9 +23,8 @@
 
 body {
   margin: 0;
-  background: var(--black);
-  background-image: var(--bg-gradient);
-  color: var(--white);
+  background-color: var(--bg-color);
+  color: var(--text-main);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
   display: flex;
@@ -35,95 +32,98 @@ body {
 }
 
 header {
-  padding: 24px 20px;
+  padding: 32px 20px 24px;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(11, 11, 11, 0.9);
-  backdrop-filter: blur(10px);
+  background: rgba(15, 14, 13, 0.95);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.1);
   position: sticky;
   top: 0;
   z-index: 10;
+  backdrop-filter: blur(8px);
 }
 
 .brand-logo {
-  max-width: 150px;
+  max-width: 140px;
   width: 100%;
   height: auto;
-  margin-bottom: 4px;
-  filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.4));
+  margin-bottom: 6px;
+  filter: drop-shadow(0 2px 8px rgba(197, 160, 89, 0.25));
 }
 
 .tagline {
   font-size: 9px;
-  color: var(--grey);
-  letter-spacing: 4px;
+  color: var(--text-muted);
+  letter-spacing: 5px;
   text-transform: uppercase;
   margin-top: 4px;
+  font-weight: 500;
 }
 
 .container {
   width: 90%;
-  max-width: 440px;
-  margin: 32px auto;
+  max-width: 420px;
+  margin: 36px auto;
   flex: 1;
 }
 
 .panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
+  background: var(--panel-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
 }
 
 .panel-title {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 600;
   text-align: center;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   margin: 0 0 8px;
-  color: var(--white);
+  color: var(--text-main);
+  text-transform: uppercase;
 }
 
 .panel-subtitle {
   text-align: center;
-  color: var(--grey);
+  color: var(--text-muted);
   font-size: 12px;
-  margin-bottom: 25px;
-  line-height: 1.5;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
 }
 
 label {
   display: block;
   font-size: 10px;
-  color: var(--light-grey);
+  color: var(--text-muted);
   margin-bottom: 8px;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 input {
   width: 100%;
   padding: 14px 16px;
-  margin-bottom: 20px;
-  background: rgba(12, 12, 12, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  border-radius: 8px;
-  font-size: 15px;
+  margin-bottom: 22px;
+  background: #11100f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border-radius: 6px;
+  font-size: 14px;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  letter-spacing: 0.5px;
 }
 
 input:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.15);
 }
 
 input::placeholder {
-  color: #555;
+  color: #4a4845;
 }
 
 button {
@@ -131,13 +131,13 @@ button {
   padding: 16px;
   border: none;
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  color: #111;
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 2.5px;
+  color: #0f0e0d;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 3px;
   cursor: pointer;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(197, 160, 89, 0.25);
   transition: all 0.2s ease;
   text-transform: uppercase;
 }
@@ -145,7 +145,7 @@ button {
 button:hover {
   opacity: 0.95;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 18px rgba(197, 160, 89, 0.35);
 }
 
 button:active {
@@ -153,15 +153,15 @@ button:active {
 }
 
 button:disabled {
-  background: #333;
-  color: #777;
+  background: #262422;
+  color: var(--text-muted);
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
 }
 
 .error {
-  color: #ff6b6b;
+  color: #d97777;
   font-size: 11px;
   text-align: center;
   margin-top: 15px;
@@ -169,20 +169,20 @@ button:disabled {
   letter-spacing: 0.5px;
 }
 
-/* SQUARE SCRATCH CARD */
+/* BOUTIQUE SCRATCH CARD */
 
 .scratch-container {
   display: none;
   width: 260px;
   height: 260px;
   max-width: 100%;
-  margin: 25px auto;
+  margin: 24px auto;
   position: relative;
-  background: #151515;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  background: #11100f;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
 .result-layer {
@@ -192,34 +192,33 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(145deg, #181818, #0e0e0e);
+  background: linear-gradient(145deg, #161514, #100f0e);
   text-align: center;
   padding: 15px;
 }
 
 .result-label {
-  color: var(--grey);
-  font-size: 10px;
+  color: var(--text-muted);
+  font-size: 9px;
   letter-spacing: 3px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   text-transform: uppercase;
 }
 
 .points {
-  font-size: 48px;
-  font-weight: 900;
+  font-size: 44px;
+  font-weight: 700;
   color: var(--gold);
   margin: 0;
   letter-spacing: 1px;
-  text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
 }
 
 .points-text {
-  color: white;
-  font-size: 12px;
-  letter-spacing: 2.5px;
-  margin-top: 8px;
-  font-weight: 600;
+  color: var(--text-main);
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-top: 6px;
+  font-weight: 500;
 }
 
 .canvas {
@@ -234,91 +233,92 @@ button:disabled {
 
 .scratch-heading {
   text-align: center;
-  font-size: 14px;
-  letter-spacing: 2.5px;
-  margin-top: 25px;
-  font-weight: 700;
-  color: var(--white);
+  font-size: 13px;
+  letter-spacing: 3px;
+  margin-top: 20px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-transform: uppercase;
 }
 
 .scratch-instruction {
   text-align: center;
-  color: var(--grey);
-  font-size: 11px;
+  color: var(--text-muted);
+  font-size: 10px;
   margin-top: 6px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
-/* WALLET DASHBOARD VIEW */
+/* BOUTIQUE WALLET CARD */
 .wallet-card {
   display: none;
-  background: linear-gradient(145deg, rgba(26,26,26,0.9), rgba(14,14,14,0.95));
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
+  background: linear-gradient(145deg, rgba(22,21,20,0.95), rgba(16,15,14,0.98));
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 28px 20px;
   text-align: center;
-  margin-top: 25px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  margin-top: 24px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.5s ease forwards;
-  backdrop-filter: blur(12px);
 }
 
 .wallet-header {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 3px;
-  color: var(--grey);
+  color: var(--text-muted);
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .wallet-points {
-  font-size: 42px;
-  font-weight: 900;
+  font-size: 38px;
+  font-weight: 700;
   color: var(--gold);
   letter-spacing: 1px;
-  margin: 5px 0 15px;
-  text-shadow: 0 2px 12px rgba(212, 175, 55, 0.3);
+  margin: 4px 0 14px;
 }
 
 .wallet-badge {
   display: inline-block;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid var(--border);
+  background: rgba(197, 160, 89, 0.08);
+  border: 1px solid var(--border-subtle);
   color: var(--gold);
-  font-size: 10px;
-  letter-spacing: 2px;
+  font-size: 9px;
+  letter-spacing: 2.5px;
   padding: 6px 14px;
-  border-radius: 20px;
+  border-radius: 30px;
   text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 20px;
+  font-weight: 600;
+  margin-bottom: 18px;
 }
 
 .wallet-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 15px 0;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 14px 0;
 }
 
 .wallet-instructions {
-  color: #ccc;
+  color: var(--text-muted);
   font-size: 11px;
   line-height: 1.6;
   margin: 0;
+  letter-spacing: 0.3px;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .footer {
   text-align: center;
   padding: 30px 10px;
-  color: #555;
+  color: #4a4845;
   font-size: 9px;
-  letter-spacing: 2.5px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  letter-spacing: 3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   margin-top: 40px;
   text-transform: uppercase;
 }
@@ -328,11 +328,11 @@ button:disabled {
     width: 94%;
   }
   .panel {
-    padding: 20px;
+    padding: 24px 18px;
   }
   .scratch-container {
-    width: 230px;
-    height: 230px;
+    width: 220px;
+    height: 220px;
   }
 }
 </style>
@@ -341,16 +341,16 @@ button:disabled {
 
 <header>
   <img src="logo.png" alt="SHRI DRIFT" class="brand-logo" onerror="this.style.display='none';document.getElementById('fallback-brand').style.display='block';">
-  <div id="fallback-brand" style="display:none; font-size:26px; font-weight:900; letter-spacing:5px;">SHRI <span style="color:var(--gold);">DRIFT</span></div>
-  <div class="tagline">Streetwear • Everyday Style</div>
+  <div id="fallback-brand" style="display:none; font-size:24px; font-weight:700; letter-spacing:4px;">SHRI <span style="color:var(--gold);">DRIFT</span></div>
+  <div class="tagline">Everyday Style</div>
 </header>
 
 <div class="container">
 
   <div class="panel" id="form-panel">
-    <h2 class="panel-title">LOYALTY CLUB</h2>
+    <h2 class="panel-title">VIP LOYALTY CLUB</h2>
     <p class="panel-subtitle">
-      Enter your details to unlock your exclusive reward.
+      Enter your mobile number to unlock your exclusive boutique reward.
     </p>
 
     <label for="mobile">Mobile Number *</label>
@@ -388,14 +388,14 @@ button:disabled {
 
   <!-- SCRATCH CARD -->
   <div id="scratch-panel" style="display:none;">
-    <h3 class="scratch-heading">YOUR REWARD IS READY</h3>
+    <h3 class="scratch-heading">Your Reward Is Ready</h3>
     <p class="scratch-instruction">
-      Scratch the card below to reveal your points.
+      Gently scratch below to reveal your points
     </p>
 
     <div class="scratch-container" id="scratch-container">
       <div class="result-layer" id="result-text">
-        <div class="result-label">Scratch Reward</div>
+        <div class="result-label">Reward Unlocked</div>
         <h2 class="points" id="points-value">0</h2>
         <div class="points-text">POINTS</div>
       </div>
@@ -406,11 +406,11 @@ button:disabled {
       </canvas>
     </div>
 
-    <!-- WALLET DASHBOARD CARD (Appears after scratching) -->
+    <!-- WALLET DASHBOARD CARD -->
     <div class="wallet-card" id="wallet-card">
       <div class="wallet-header">Total Lifetime Wallet Balance</div>
       <div class="wallet-points" id="wallet-points-display">0 PTS</div>
-      <div class="wallet-badge">⭐ Club Member Tier</div>
+      <div class="wallet-badge">⭐ VIP Club Member</div>
       <div class="wallet-divider"></div>
       <p class="wallet-instructions">
         Thank you for shopping with Shri Drift! Your points have been securely updated.<br>Show this wallet pass at checkout to redeem.
@@ -423,7 +423,7 @@ button:disabled {
 <footer class="footer">
   SHRI DRIFT © 2026
   <br><br>
-  Thank you for being part of our community.
+  Everyday Style & Elegance
 </footer>
 
 <script>
@@ -433,7 +433,7 @@ const qrCodeId = urlParams.get("code");
 
 if (!qrCodeId) {
   document.getElementById("form-panel").innerHTML =
-    '<p style="text-align:center;color:#ff6b6b;font-size:13px;padding:20px;">Invalid or missing QR link.</p>';
+    '<p style="text-align:center;color:#d97777;font-size:13px;padding:20px;letter-spacing:1px;">Invalid or missing QR link.</p>';
 }
 
 async function processReward() {
@@ -492,7 +492,7 @@ async function processReward() {
 
     if (data.status === "error") {
       document.getElementById("form-panel").innerHTML =
-        '<h3 style="text-align:center;color:#ff6b6b;font-size:14px;letter-spacing:1px;padding:10px;">' +
+        '<h3 style="text-align:center;color:#d97777;font-size:13px;letter-spacing:1px;padding:10px;">' +
         escapeHTML(data.message) +
         '</h3>';
       return;
@@ -553,16 +553,16 @@ function initScratchCard() {
   let finished = false;
 
   const grad = ctx.createLinearGradient(0, 0, displayWidth, displayHeight);
-  grad.addColorStop(0, "#D4AF37");
-  grad.addColorStop(0.5, "#f9e7a2");
-  grad.addColorStop(1, "#aa8c2c");
+  grad.addColorStop(0, "#C5A059");
+  grad.addColorStop(0.5, "#E8CE95");
+  grad.addColorStop(1, "#9E7E3B");
 
   ctx.globalCompositeOperation = "source-over";
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, displayWidth, displayHeight);
 
-  ctx.fillStyle = "#111111";
-  ctx.font = "bold 15px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+  ctx.fillStyle = "#161514";
+  ctx.font = "bold 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 

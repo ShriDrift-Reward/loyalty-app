@@ -1,304 +1,678 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Shri Drift - Unlock Reward</title>
-  <style>
-    :root {
-      --gold: #D4AF37;
-      --bg: #111111;
-      --panel: #1A1A1A;
-      --text: #FFFFFF;
-    }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .header {
-      margin-top: 40px;
-      text-align: center;
-    }
-    .header h1 {
-      color: var(--gold);
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .header p {
-      color: #888;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-    .container {
-      background: var(--panel);
-      width: 90%;
-      max-width: 400px;
-      margin-top: 30px;
-      border-radius: 12px;
-      padding: 25px;
-      box-sizing: border-box;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      background: #222;
-      border: 1px solid #333;
-      color: white;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-    input:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background: var(--gold);
-      color: black;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      text-transform: uppercase;
-    }
-    button:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-    /* Scratch Card Area */
-    .scratch-container {
-      display: none; 
-      position: relative;
-      width: 300px;
-      height: 150px;
-      margin: 30px auto;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-      background: #222;
-    }
-    .result-layer {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: #222;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-    }
-    .result-layer h2 {
-      color: var(--gold);
-      font-size: 32px;
-      margin: 0;
-    }
-    .result-layer p {
-      margin: 5px 0 0 0;
-      color: #aaa;
-    }
-    canvas {
-      position: absolute;
-      top: 0; left: 0;
-      z-index: 2;
-      touch-action: none;
-    }
-    .message-box {
-      margin-top: 20px;
-      text-align: center;
-      color: var(--gold);
-      font-weight: bold;
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHRI DRIFT | Loyalty Club</title>
+
+<style>
+:root {
+  --black: #101010;
+  --white: #ffffff;
+  --grey: #999999;
+  --gold: #D4AF37;
+  --panel: #191919;
+  --border: #303030;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  padding: 25px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: 5px;
+}
+
+.brand span {
+  color: var(--gold);
+}
+
+.tagline {
+  font-size: 10px;
+  color: var(--grey);
+  letter-spacing: 3px;
+  margin-top: 7px;
+}
+
+.container {
+  width: 90%;
+  max-width: 420px;
+  margin: 28px auto;
+}
+
+.collection {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.collection h2 {
+  font-size: 23px;
+  letter-spacing: 2px;
+  margin: 0 0 8px;
+}
+
+.collection p {
+  color: var(--grey);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.category {
+  background: #191919;
+  border: 1px solid var(--border);
+  padding: 18px 10px;
+  text-align: center;
+}
+
+.category-icon {
+  font-size: 27px;
+  margin-bottom: 9px;
+}
+
+.category h3 {
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.category p {
+  font-size: 10px;
+  color: var(--grey);
+  margin: 6px 0 0;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+.panel-title {
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 2px;
+  margin: 0 0 7px;
+}
+
+.panel-subtitle {
+  text-align: center;
+  color: var(--grey);
+  font-size: 12px;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  color: #cccccc;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 19px;
+  background: #101010;
+  border: 1px solid #383838;
+  color: white;
+  border-radius: 0;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--gold);
+}
+
+input::placeholder {
+  color: #666;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: var(--gold);
+  color: #111;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #ff5555;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 15px;
+  display: none;
+}
+
+/* SQUARE SCRATCH CARD */
+
+.scratch-container {
+  display: none;
+  width: 260px;
+  height: 260px;
+  max-width: 100%;
+  margin: 28px auto;
+  position: relative;
+  background: #202020;
+  border: 1px solid #444;
+  overflow: hidden;
+}
+
+.result-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #202020;
+  text-align: center;
+  padding: 15px;
+}
+
+.result-label {
+  color: #999;
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
+}
+
+.points {
+  font-size: 44px;
+  font-weight: bold;
+  color: var(--gold);
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.points-text {
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-top: 8px;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.scratch-heading {
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-top: 25px;
+}
+
+.scratch-instruction {
+  text-align: center;
+  color: var(--grey);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.final-message {
+  display: none;
+  text-align: center;
+  margin-top: 25px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.final-message h3 {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--gold);
+}
+
+.final-message p {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.footer {
+  text-align: center;
+  padding: 25px 10px;
+  color: #666;
+  font-size: 10px;
+  letter-spacing: 2px;
+  border-top: 1px solid var(--border);
+  margin-top: 35px;
+}
+
+@media(max-width: 350px) {
+  .container {
+    width: 94%;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+  .scratch-container {
+    width: 230px;
+    height: 230px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <div class="header">
-    <h1>Shri Drift</h1>
-    <p>Premium Roadside Fits</p>
+<header>
+  <div class="brand">SHRI <span>DRIFT</span></div>
+  <div class="tagline">STREETWEAR • EVERYDAY STYLE</div>
+</header>
+
+<div class="container">
+
+  <div class="collection">
+    <h2>WEAR YOUR STYLE.</h2>
+    <p>YOUR STYLE. YOUR REWARDS.</p>
   </div>
 
-  <div class="container" id="form-panel">
-    <p style="text-align: center; margin-top: 0; font-weight: bold;">Claim Your Reward</p>
-    
-    <label>Mobile Number *</label>
-    <input type="tel" id="mobile" placeholder="Enter 10-digit mobile" required maxlength="10">
-    
-    <label>Your Name</label>
-    <input type="text" id="name" placeholder="What should we call you?">
-    
-    <label>Referred by a friend? (Optional)</label>
-    <input type="tel" id="referral" placeholder="Friend's Mobile No." maxlength="10">
-    <p style="font-size: 11px; color: #888; margin-top: -10px; margin-bottom: 15px;">Enter their number so they get points too!</p>
-    
-    <button id="submit-btn" onclick="processReward()">Verify & Scratch</button>
-    <p id="form-error" style="color: #ff4444; font-size: 12px; text-align: center; display: none;"></p>
-  </div>
-
-  <div class="scratch-container" id="scratch-panel" style="display: none;">
-    <div class="result-layer" id="result-text">
-      <!-- Points will be injected here via JS -->
+  <div class="categories">
+    <div class="category">
+      <div class="category-icon">👕</div>
+      <h3>T-SHIRTS</h3>
+      <p>EVERYDAY ESSENTIALS</p>
     </div>
-    <canvas id="scratch-canvas" width="300" height="150"></canvas>
+
+    <div class="category">
+      <div class="category-icon">👖</div>
+      <h3>PANTS</h3>
+      <p>STREETWEAR COLLECTION</p>
+    </div>
   </div>
-  
-  <div class="message-box" id="final-message"></div>
 
-  <script>
-    const CLOUDFLARE_API = "https://shri-drift.maynole111.workers.dev/";
+  <div class="panel" id="form-panel">
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const qrCodeId = urlParams.get('code');
+    <h2 class="panel-title">LOYALTY CLUB</h2>
+    <p class="panel-subtitle">
+      Enter your details and unlock your reward.
+    </p>
 
-    if (!qrCodeId) {
-      document.getElementById('form-panel').innerHTML = "<p style='text-align:center; color: #ff4444;'>Invalid or missing QR link.</p>";
+    <label for="mobile">MOBILE NUMBER *</label>
+    <input
+      type="tel"
+      id="mobile"
+      placeholder="10-digit mobile number"
+      maxlength="10"
+      inputmode="numeric"
+    >
+
+    <label for="name">YOUR NAME</label>
+    <input
+      type="text"
+      id="name"
+      placeholder="Enter your name"
+      maxlength="100"
+    >
+
+    <label for="referral">REFERRED BY A FRIEND? (OPTIONAL)</label>
+    <input
+      type="tel"
+      id="referral"
+      placeholder="Friend's mobile number"
+      maxlength="10"
+      inputmode="numeric"
+    >
+
+    <button id="submit-btn" onclick="processReward()">
+      VERIFY & UNLOCK
+    </button>
+
+    <div class="error" id="form-error"></div>
+
+  </div>
+
+  <!-- SCRATCH CARD -->
+
+  <div id="scratch-panel" style="display:none;">
+
+    <h3 class="scratch-heading">YOUR REWARD IS READY</h3>
+    <p class="scratch-instruction">
+      Scratch the square to reveal your points.
+    </p>
+
+    <div class="scratch-container" id="scratch-container">
+
+      <div class="result-layer" id="result-text">
+        <div class="result-label">YOU EARNED</div>
+        <h2 class="points" id="points-value">0</h2>
+        <div class="points-text">LOYALTY POINTS</div>
+      </div>
+
+      <canvas
+        class="canvas"
+        id="scratch-canvas"
+        width="260"
+        height="260">
+      </canvas>
+
+    </div>
+
+    <div class="final-message" id="final-message">
+      <h3>REWARD UNLOCKED</h3>
+      <p>
+        Your points have been added to your loyalty account.
+        Show this screen at checkout.
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<footer class="footer">
+  SHRI DRIFT © 2026
+  <br><br>
+  THANK YOU FOR BEING PART OF OUR COMMUNITY.
+</footer>
+
+
+<script>
+
+const CLOUDFLARE_API =
+  "https://shri-drift.maynole111.workers.dev/";
+
+const urlParams = new URLSearchParams(window.location.search);
+const qrCodeId = urlParams.get("code");
+
+if (!qrCodeId) {
+  document.getElementById("form-panel").innerHTML =
+    '<p style="text-align:center;color:#ff5555;">Invalid or missing QR link.</p>';
+}
+
+
+async function processReward() {
+
+  const mobile = document.getElementById("mobile").value.trim();
+  const name = document.getElementById("name").value.trim();
+  const referral = document.getElementById("referral").value.trim();
+
+  const btn = document.getElementById("submit-btn");
+  const err = document.getElementById("form-error");
+
+  if (!/^\d{10}$/.test(mobile)) {
+    err.innerText = "Please enter a valid 10-digit mobile number.";
+    err.style.display = "block";
+    return;
+  }
+
+  if (referral && !/^\d{10}$/.test(referral)) {
+    err.innerText = "Please enter a valid referral number.";
+    err.style.display = "block";
+    return;
+  }
+
+  err.style.display = "none";
+  btn.innerText = "VERIFYING...";
+  btn.disabled = true;
+
+  const payload = {
+    action: "scratch",
+    qrId: qrCodeId,
+    mobile: mobile,
+    name: name,
+    referral: referral
+  };
+
+  try {
+
+    const response = await fetch(CLOUDFLARE_API, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    });
+
+    const responseText = await response.text();
+
+    let data;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      throw new Error("Server returned an invalid response. Please try again.");
     }
 
-    async function processReward() {
-      const mobile = document.getElementById('mobile').value;
-      const name = document.getElementById('name').value;
-      const referral = document.getElementById('referral').value;
-      const btn = document.getElementById('submit-btn');
-      const err = document.getElementById('form-error');
+    if (!response.ok) {
+      throw new Error("Server error. Please try again.");
+    }
 
-      if (mobile.length < 10) {
-        err.innerText = "Please enter a valid 10-digit mobile number.";
-        err.style.display = "block";
-        return;
-      }
-      err.style.display = "none";
-      btn.innerText = "Verifying...";
-      btn.disabled = true;
+    if (data.status === "error") {
+      document.getElementById("form-panel").innerHTML =
+        '<h3 style="text-align:center;color:#ff5555;">' +
+        escapeHTML(data.message) +
+        '</h3>';
+      return;
+    }
 
-      const payload = {
-        action: "scratch",
-        qrId: qrCodeId,
-        mobile: mobile,
-        name: name,
-        referral: referral
-      };
+    if (data.status === "success") {
 
-      try {
-        const response = await fetch(CLOUDFLARE_API, {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: { 'Content-Type': 'text/plain' }
-        });
+      document.getElementById("form-panel").style.display = "none";
 
-        const data = await response.json();
+      const scratchPanel =
+        document.getElementById("scratch-panel");
 
-        if (data.status === "error") {
-          document.getElementById('form-panel').innerHTML = `<h3 style="text-align:center; color: #ff4444;">${data.message}</h3>`;
-        } else if (data.status === "success") {
-          // Hide input form and forcefully show the scratch panel
-          document.getElementById('form-panel').style.display = "none";
-          const scratchPanel = document.getElementById('scratch-panel');
-          scratchPanel.style.display = "block";
-          
-          document.getElementById('result-text').innerHTML = `
-            <h2>${data.pointsAwarded} POINTS</h2>
-            <p>Added to your profile!</p>
-          `;
-          
-          initScratchCard();
-        }
-      } catch (error) {
-        err.innerText = "SYSTEM ERROR: " + error.message;
-        err.style.display = "block";
-        btn.innerText = "Verify & Scratch";
-        btn.disabled = false;
+      scratchPanel.style.display = "block";
+
+      document.getElementById("points-value").innerText =
+        data.pointsAwarded;
+
+      document.getElementById("scratch-container").style.display =
+        "block";
+
+      initScratchCard();
+    }
+
+  } catch (error) {
+
+    err.innerText = "SYSTEM ERROR: " + error.message;
+    err.style.display = "block";
+
+    btn.innerText = "VERIFY & UNLOCK";
+    btn.disabled = false;
+
+  }
+}
+
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, function(char) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char];
+  });
+}
+
+
+/* SQUARE SCRATCH FUNCTION */
+
+function initScratchCard() {
+
+  const canvas = document.getElementById("scratch-canvas");
+  const ctx = canvas.getContext("2d");
+
+  let isDrawing = false;
+  let finished = false;
+
+  // Gold scratch surface
+
+  ctx.globalCompositeOperation = "source-over";
+  ctx.fillStyle = "#D4AF37";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Scratch text
+
+  ctx.fillStyle = "#111111";
+  ctx.font = "bold 18px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  ctx.fillText(
+    "SCRATCH HERE",
+    canvas.width / 2,
+    canvas.height / 2
+  );
+
+  ctx.font = "11px Arial";
+  ctx.fillText(
+    "SHRI DRIFT",
+    canvas.width / 2,
+    canvas.height / 2 + 27
+  );
+
+  ctx.lineWidth = 35;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  ctx.globalCompositeOperation = "destination-out";
+
+
+  function getPosition(e) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    const point = e.touches ? e.touches[0] : e;
+
+    return {
+      x: (point.clientX - rect.left) * canvas.width / rect.width,
+      y: (point.clientY - rect.top) * canvas.height / rect.height
+    };
+  }
+
+
+  function startDraw(e) {
+
+    if (finished) return;
+
+    isDrawing = true;
+
+    const pos = getPosition(e);
+
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    ctx.lineTo(pos.x + 0.1, pos.y + 0.1);
+    ctx.stroke();
+
+    e.preventDefault();
+  }
+
+
+  function draw(e) {
+
+    if (!isDrawing || finished) return;
+
+    const pos = getPosition(e);
+
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+
+    e.preventDefault();
+  }
+
+
+  function endDraw() {
+
+    if (!isDrawing || finished) return;
+
+    isDrawing = false;
+
+    checkScratchProgress();
+  }
+
+
+  function checkScratchProgress() {
+
+    const pixels = ctx.getImageData(
+      0, 0, canvas.width, canvas.height
+    ).data;
+
+    let transparent = 0;
+
+    for (let i = 3; i < pixels.length; i += 4) {
+
+      if (pixels[i] === 0) {
+        transparent++;
       }
     }
 
-    function initScratchCard() {
-      const canvas = document.getElementById('scratch-canvas');
-      const ctx = canvas.getContext('2d');
-      let isDrawing = false;
+    const clearedRatio =
+      transparent / (pixels.length / 4);
 
-      ctx.fillStyle = '#D4AF37'; 
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.fillStyle = '#111';
-      ctx.font = 'bold 20px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2 + 7);
+    if (clearedRatio > 0.5) {
 
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.lineWidth = 35; 
-      
-      ctx.globalCompositeOperation = 'destination-out';
+      finished = true;
 
-      function getBrushPos(e) {
-        const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return {
-          x: clientX - rect.left,
-          y: clientY - rect.top
-        };
-      }
+      canvas.style.transition = "opacity 0.4s";
+      canvas.style.opacity = "0";
 
-      function startDraw(e) {
-        isDrawing = true;
-        const pos = getBrushPos(e);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-      }
+      setTimeout(function() {
+        canvas.style.display = "none";
+      }, 400);
 
-      function draw(e) {
-        if (!isDrawing) return;
-        e.preventDefault(); 
-        const pos = getBrushPos(e);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-      }
-
-      function endDraw() {
-        isDrawing = false;
-        checkScratchProgress();
-      }
-
-      canvas.addEventListener('mousedown', startDraw);
-      canvas.addEventListener('mousemove', draw);
-      canvas.addEventListener('mouseup', endDraw);
-
-      canvas.addEventListener('touchstart', startDraw, {passive: false});
-      canvas.addEventListener('touchmove', draw, {passive: false});
-      canvas.addEventListener('touchend', endDraw);
-      
-      function checkScratchProgress() {
-        const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-        let transparent = 0;
-        for (let i = 3; i < pixels.length; i += 4) {
-          if (pixels[i] === 0) transparent++;
-        }
-        const clearedRatio = transparent / (pixels.length / 4);
-        
-        if (clearedRatio > 0.5) {
-          canvas.style.transition = "opacity 0.5s";
-          canvas.style.opacity = "0";
-          setTimeout(() => canvas.style.display = "none", 500);
-          
-          document.getElementById('final-message').innerText = "Screenshot this and show it at checkout!";
-          document.getElementById('final-message').style.display = "block";
-        }
-      }
+      document.getElementById("final-message").style.display =
+        "block";
     }
-  </script>
+  }
+
+
+  canvas.addEventListener("pointerdown", startDraw);
+  canvas.addEventListener("pointermove", draw);
+
+  window.addEventListener("pointerup", endDraw);
+
+}
+
+</script>
+
 </body>
 </html>

@@ -423,9 +423,9 @@ button:disabled {
 
     <div class="scratch-container" id="scratch-container">
       <div class="result-layer" id="result-text">
-        <div class="result-label">You Earned</div>
+        <div class="result-label">Scratch Reward</div>
         <h2 class="points" id="points-value">0</h2>
-        <div class="points-text">LOYALTY POINTS</div>
+        <div class="points-text">POINTS</div>
       </div>
 
       <canvas
@@ -436,12 +436,12 @@ button:disabled {
 
     <!-- WALLET DASHBOARD CARD (Appears after scratching) -->
     <div class="wallet-card" id="wallet-card">
-      <div class="wallet-header">Your Loyalty Wallet</div>
-      <div class="wallet-points" id="wallet-points-display">0</div>
+      <div class="wallet-header">Total Lifetime Wallet Balance</div>
+      <div class="wallet-points" id="wallet-points-display">0 PTS</div>
       <div class="wallet-badge">⭐ Club Member Tier</div>
       <div class="wallet-divider"></div>
       <p class="wallet-instructions">
-        Points successfully credited to your account.<br>Show this wallet pass at checkout to redeem.
+        Points from Column C updated successfully.<br>Show this wallet pass at checkout to redeem.
       </p>
     </div>
   </div>
@@ -531,9 +531,14 @@ async function processReward() {
       const scratchPanel = document.getElementById("scratch-panel");
       scratchPanel.style.display = "block";
 
-      const pointsVal = data.pointsAwarded;
-      document.getElementById("points-value").innerText = pointsVal;
-      document.getElementById("wallet-points-display").innerText = pointsVal + " PTS";
+      // Show scratch reward value
+      const pointsAwarded = data.pointsAwarded || 0;
+      document.getElementById("points-value").innerText = pointsAwarded;
+
+      // Show total lifetime wallet balance from Column C (fallback to pointsAwarded if total not passed)
+      const totalBalance = data.totalEarnedPoints !== undefined ? data.totalEarnedPoints : pointsAwarded;
+      document.getElementById("wallet-points-display").innerText = totalBalance + " PTS";
+
       document.getElementById("scratch-container").style.display = "block";
 
       initScratchCard();
@@ -564,7 +569,6 @@ function initScratchCard() {
   const canvas = document.getElementById("scratch-canvas");
   const ctx = canvas.getContext("2d");
 
-  // Handle Retina / High-DPI screens so text and rendering are ultra-crisp
   const dpr = window.devicePixelRatio || 1;
   const displayWidth = 260;
   const displayHeight = 260;
@@ -579,7 +583,6 @@ function initScratchCard() {
   let isDrawing = false;
   let finished = false;
 
-  // Gold metallic gradient scratch surface
   const grad = ctx.createLinearGradient(0, 0, displayWidth, displayHeight);
   grad.addColorStop(0, "#D4AF37");
   grad.addColorStop(0.5, "#f9e7a2");
@@ -589,7 +592,6 @@ function initScratchCard() {
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, displayWidth, displayHeight);
 
-  // Clear, crisp scratch text rendering
   ctx.fillStyle = "#111111";
   ctx.font = "bold 15px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
   ctx.textAlign = "center";
@@ -651,7 +653,6 @@ function initScratchCard() {
   function checkScratchProgress() {
     const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
     let transparent = 0;
-    // Sample every 16th pixel for performance optimization
     for (let i = 3; i < pixels.length; i += 16) {
       if (pixels[i] === 0) {
         transparent++;

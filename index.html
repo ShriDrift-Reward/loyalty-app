@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SHRI DRIFT | Loyalty Club</title>
-
 <style>
 :root {
   --black: #0b0b0b;
@@ -90,47 +89,6 @@ header {
   letter-spacing: 2px;
   margin: 0;
   text-transform: uppercase;
-}
-
-.categories {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 30px;
-}
-
-.category {
-  background: rgba(25, 25, 25, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 20px 12px;
-  text-align: center;
-  backdrop-filter: blur(5px);
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.category:hover {
-  border-color: var(--border);
-  transform: translateY(-2px);
-}
-
-.category-icon {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.category h3 {
-  font-size: 11px;
-  letter-spacing: 2px;
-  margin: 0;
-  color: var(--white);
-}
-
-.category p {
-  font-size: 9px;
-  color: var(--grey);
-  margin: 6px 0 0;
-  letter-spacing: 1px;
 }
 
 .panel {
@@ -314,36 +272,67 @@ button:disabled {
   letter-spacing: 1px;
 }
 
-.final-message {
+/* WALLET DASHBOARD VIEW */
+.wallet-card {
   display: none;
+  background: linear-gradient(145deg, rgba(26,26,26,0.9), rgba(14,14,14,0.95));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
   text-align: center;
   margin-top: 25px;
-  padding: 22px;
-  background: rgba(20, 20, 20, 0.8);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
   animation: fadeIn 0.5s ease forwards;
+  backdrop-filter: blur(12px);
+}
+
+.wallet-header {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--grey);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.wallet-points {
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin: 5px 0 15px;
+  text-shadow: 0 2px 12px rgba(212, 175, 55, 0.3);
+}
+
+.wallet-badge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.wallet-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 15px 0;
+}
+
+.wallet-instructions {
+  color: #ccc;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 0;
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.final-message h3 {
-  font-size: 13px;
-  letter-spacing: 2.5px;
-  color: var(--gold);
-  margin: 0 0 8px;
-  font-weight: 800;
-}
-
-.final-message p {
-  color: #ccc;
-  font-size: 11px;
-  line-height: 1.6;
-  margin: 0;
 }
 
 .footer {
@@ -371,11 +360,9 @@ button:disabled {
 }
 </style>
 </head>
-
 <body>
 
 <header>
-  <!-- Replace 'logo.png' with your uploaded logo filename or image link -->
   <img src="logo.png" alt="SHRI DRIFT" class="brand-logo" onerror="this.style.display='none';document.getElementById('fallback-brand').style.display='block';">
   <div id="fallback-brand" style="display:none; font-size:26px; font-weight:900; letter-spacing:5px;">SHRI <span style="color:var(--gold);">DRIFT</span></div>
   <div class="tagline">Streetwear • Everyday Style</div>
@@ -388,22 +375,7 @@ button:disabled {
     <p>Your Style. Your Rewards.</p>
   </div>
 
-  <div class="categories">
-    <div class="category">
-      <div class="category-icon">👕</div>
-      <h3>T-SHIRTS</h3>
-      <p>ESSENTIALS</p>
-    </div>
-
-    <div class="category">
-      <div class="category-icon">👖</div>
-      <h3>PANTS</h3>
-      <p>COLLECTION</p>
-    </div>
-  </div>
-
   <div class="panel" id="form-panel">
-
     <h2 class="panel-title">LOYALTY CLUB</h2>
     <p class="panel-subtitle">
       Enter your details to unlock your exclusive reward.
@@ -440,20 +412,16 @@ button:disabled {
     </button>
 
     <div class="error" id="form-error"></div>
-
   </div>
 
   <!-- SCRATCH CARD -->
-
   <div id="scratch-panel" style="display:none;">
-
     <h3 class="scratch-heading">YOUR REWARD IS READY</h3>
     <p class="scratch-instruction">
       Scratch the card below to reveal your points.
     </p>
 
     <div class="scratch-container" id="scratch-container">
-
       <div class="result-layer" id="result-text">
         <div class="result-label">You Earned</div>
         <h2 class="points" id="points-value">0</h2>
@@ -462,20 +430,20 @@ button:disabled {
 
       <canvas
         class="canvas"
-        id="scratch-canvas"
-        width="260"
-        height="260">
+        id="scratch-canvas">
       </canvas>
-
     </div>
 
-    <div class="final-message" id="final-message">
-      <h3>REWARD UNLOCKED</h3>
-      <p>
-        Your points have been added to your loyalty account.<br>Show this screen at checkout to redeem.
+    <!-- WALLET DASHBOARD CARD (Appears after scratching) -->
+    <div class="wallet-card" id="wallet-card">
+      <div class="wallet-header">Your Loyalty Wallet</div>
+      <div class="wallet-points" id="wallet-points-display">0</div>
+      <div class="wallet-badge">⭐ Club Member Tier</div>
+      <div class="wallet-divider"></div>
+      <p class="wallet-instructions">
+        Points successfully credited to your account.<br>Show this wallet pass at checkout to redeem.
       </p>
     </div>
-
   </div>
 
 </div>
@@ -486,12 +454,8 @@ button:disabled {
   Thank you for being part of our community.
 </footer>
 
-
 <script>
-
-const CLOUDFLARE_API =
-  "https://shri-drift.maynole111.workers.dev/";
-
+const CLOUDFLARE_API = "https://shri-drift.maynole111.workers.dev/";
 const urlParams = new URLSearchParams(window.location.search);
 const qrCodeId = urlParams.get("code");
 
@@ -500,9 +464,7 @@ if (!qrCodeId) {
     '<p style="text-align:center;color:#ff6b6b;font-size:13px;padding:20px;">Invalid or missing QR link.</p>';
 }
 
-
 async function processReward() {
-
   const mobile = document.getElementById("mobile").value.trim();
   const name = document.getElementById("name").value.trim();
   const referral = document.getElementById("referral").value.trim();
@@ -535,7 +497,6 @@ async function processReward() {
   };
 
   try {
-
     const response = await fetch(CLOUDFLARE_API, {
       method: "POST",
       body: JSON.stringify(payload),
@@ -545,7 +506,6 @@ async function processReward() {
     });
 
     const responseText = await response.text();
-
     let data;
 
     try {
@@ -567,34 +527,25 @@ async function processReward() {
     }
 
     if (data.status === "success") {
-
       document.getElementById("form-panel").style.display = "none";
-
-      const scratchPanel =
-        document.getElementById("scratch-panel");
-
+      const scratchPanel = document.getElementById("scratch-panel");
       scratchPanel.style.display = "block";
 
-      document.getElementById("points-value").innerText =
-        data.pointsAwarded;
-
-      document.getElementById("scratch-container").style.display =
-        "block";
+      const pointsVal = data.pointsAwarded;
+      document.getElementById("points-value").innerText = pointsVal;
+      document.getElementById("wallet-points-display").innerText = pointsVal + " PTS";
+      document.getElementById("scratch-container").style.display = "block";
 
       initScratchCard();
     }
-
   } catch (error) {
-
     err.innerText = "SYSTEM ERROR: " + error.message;
     err.style.display = "block";
 
     btn.innerText = "Verify & Unlock";
     btn.disabled = false;
-
   }
 }
-
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, function(char) {
@@ -608,63 +559,69 @@ function escapeHTML(value) {
   });
 }
 
-
-/* SQUARE SCRATCH FUNCTION */
-
+/* HIGH-DPI SHARP SQUARE SCRATCH FUNCTION */
 function initScratchCard() {
-
   const canvas = document.getElementById("scratch-canvas");
   const ctx = canvas.getContext("2d");
+
+  // Handle Retina / High-DPI screens so text and rendering are ultra-crisp
+  const dpr = window.devicePixelRatio || 1;
+  const displayWidth = 260;
+  const displayHeight = 260;
+
+  canvas.width = displayWidth * dpr;
+  canvas.height = displayHeight * dpr;
+  canvas.style.width = displayWidth + "px";
+  canvas.style.height = displayHeight + "px";
+
+  ctx.scale(dpr, dpr);
 
   let isDrawing = false;
   let finished = false;
 
   // Gold metallic gradient scratch surface
-  const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  const grad = ctx.createLinearGradient(0, 0, displayWidth, displayHeight);
   grad.addColorStop(0, "#D4AF37");
   grad.addColorStop(0.5, "#f9e7a2");
   grad.addColorStop(1, "#aa8c2c");
 
   ctx.globalCompositeOperation = "source-over";
   ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, displayWidth, displayHeight);
 
-  // Scratch text
+  // Clear, crisp scratch text rendering
   ctx.fillStyle = "#111111";
-  ctx.font = "bold 16px -apple-system, sans-serif";
+  ctx.font = "bold 15px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
   ctx.fillText(
     "✨ SCRATCH HERE ✨",
-    canvas.width / 2,
-    canvas.height / 2 - 10
+    displayWidth / 2,
+    displayHeight / 2 - 12
   );
 
-  ctx.font = "11px -apple-system, sans-serif";
-  ctx.letterSpacing = "2px";
+  ctx.font = "11px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
   ctx.fillText(
     "SHRI DRIFT",
-    canvas.width / 2,
-    canvas.height / 2 + 20
+    displayWidth / 2,
+    displayHeight / 2 + 16
   );
 
-  ctx.lineWidth = 40;
+  ctx.lineWidth = 42;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
 
   ctx.globalCompositeOperation = "destination-out";
 
-
   function getPosition(e) {
     const rect = canvas.getBoundingClientRect();
     const point = e.touches ? e.touches[0] : e;
     return {
-      x: (point.clientX - rect.left) * canvas.width / rect.width,
-      y: (point.clientY - rect.top) * canvas.height / rect.height
+      x: point.clientX - rect.left,
+      y: point.clientY - rect.top
     };
   }
-
 
   function startDraw(e) {
     if (finished) return;
@@ -677,7 +634,6 @@ function initScratchCard() {
     e.preventDefault();
   }
 
-
   function draw(e) {
     if (!isDrawing || finished) return;
     const pos = getPosition(e);
@@ -686,31 +642,26 @@ function initScratchCard() {
     e.preventDefault();
   }
 
-
   function endDraw() {
     if (!isDrawing || finished) return;
     isDrawing = false;
     checkScratchProgress();
   }
 
-
   function checkScratchProgress() {
-    const pixels = ctx.getImageData(
-      0, 0, canvas.width, canvas.height
-    ).data;
-
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
     let transparent = 0;
-    for (let i = 3; i < pixels.length; i += 4) {
+    // Sample every 16th pixel for performance optimization
+    for (let i = 3; i < pixels.length; i += 16) {
       if (pixels[i] === 0) {
         transparent++;
       }
     }
 
-    const clearedRatio = transparent / (pixels.length / 4);
+    const clearedRatio = transparent / (pixels.length / 16);
 
-    if (clearedRatio > 0.45) {
+    if (clearedRatio > 0.40) {
       finished = true;
-
       canvas.style.transition = "opacity 0.5s ease";
       canvas.style.opacity = "0";
 
@@ -718,17 +669,14 @@ function initScratchCard() {
         canvas.style.display = "none";
       }, 500);
 
-      document.getElementById("final-message").style.display = "block";
+      document.getElementById("wallet-card").style.display = "block";
     }
   }
 
-
-  canvas.addEventListener("pointerdown", startDrop = startDraw);
+  canvas.addEventListener("pointerdown", startDraw);
   canvas.addEventListener("pointermove", draw);
   window.addEventListener("pointerup", endDraw);
-
 }
-
 </script>
 
 </body>

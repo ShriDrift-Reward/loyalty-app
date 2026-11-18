@@ -81,7 +81,7 @@
     }
     /* Scratch Card Area */
     .scratch-container {
-      display: none; /* Hidden until form is submitted */
+      display: none; 
       position: relative;
       width: 300px;
       height: 150px;
@@ -113,7 +113,7 @@
       position: absolute;
       top: 0; left: 0;
       z-index: 2;
-      touch-action: none; /* Prevents scrolling while scratching */
+      touch-action: none;
     }
     .message-box {
       margin-top: 20px;
@@ -159,11 +159,10 @@
 
   <script>
     // =========================================================================
-    // PASTE YOUR CLOUDFLARE WORKER URL HERE
+    // YOUR VERIFIED CLOUDFLARE WORKER URL
     // =========================================================================
     const CLOUDFLARE_API = "https://shri-drift.maynole111.workers.dev/";
 
-    // 1. Extract the unique code from the URL (e.g., ?code=cloth-ABCD123)
     const urlParams = new URLSearchParams(window.location.search);
     const qrCodeId = urlParams.get('code');
 
@@ -196,7 +195,6 @@
       };
 
       try {
-        // Hit the Cloudflare proxy
         const response = await fetch(CLOUDFLARE_API, {
           method: 'POST',
           body: JSON.stringify(payload),
@@ -208,7 +206,6 @@
         if (data.status === "error") {
           document.getElementById('form-panel').innerHTML = `<h3 style="text-align:center; color: #ff4444;">${data.message}</h3>`;
         } else if (data.status === "success") {
-          // Success! Hide form, setup the scratch card
           document.getElementById('form-panel').style.display = "none";
           document.getElementById('scratch-panel').style.display = "block";
           
@@ -220,35 +217,31 @@
           initScratchCard();
         }
       } catch (error) {
-        err.innerText = "Network error. Make sure you are connected to the internet.";
+        // Updated error tracker to show exact failure reason
+        err.innerText = "SYSTEM ERROR: " + error.message;
         err.style.display = "block";
         btn.innerText = "Verify & Scratch";
         btn.disabled = false;
       }
     }
 
-    // 2. The HTML5 Canvas Scratch Logic
     function initScratchCard() {
       const canvas = document.getElementById('scratch-canvas');
       const ctx = canvas.getContext('2d');
       let isDrawing = false;
 
-      // Draw the gold coating
-      ctx.fillStyle = '#D4AF37'; // Gold
+      ctx.fillStyle = '#D4AF37'; 
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Add text on top of the scratch layer
       ctx.fillStyle = '#111';
       ctx.font = 'bold 20px Arial';
       ctx.textAlign = 'center';
       ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2 + 7);
 
-      // Easing/Brush settings
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
-      ctx.lineWidth = 35; // Size of the coin scratching
+      ctx.lineWidth = 35; 
       
-      // This mode erases whatever is drawn over
       ctx.globalCompositeOperation = 'destination-out';
 
       function getBrushPos(e) {
@@ -270,7 +263,7 @@
 
       function draw(e) {
         if (!isDrawing) return;
-        e.preventDefault(); // Stop screen from scrolling on mobile
+        e.preventDefault(); 
         const pos = getBrushPos(e);
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
@@ -289,7 +282,6 @@
       canvas.addEventListener('touchmove', draw, {passive: false});
       canvas.addEventListener('touchend', endDraw);
       
-      // Clear the rest of the canvas if they scratched 50% of it
       function checkScratchProgress() {
         const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
         let transparent = 0;

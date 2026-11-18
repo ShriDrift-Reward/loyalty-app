@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Shri Drift - Unlock Reward</title>
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --bg: #111111;
+      --panel: #1A1A1A;
+      --text: #FFFFFF;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .header {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .header h1 {
+      color: var(--gold);
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .header p {
+      color: #888;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .container {
+      background: var(--panel);
+      width: 90%;
+      max-width: 400px;
+      margin-top: 30px;
+      border-radius: 12px;
+      padding: 25px;
+      box-sizing: border-box;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      background: #222;
+      border: 1px solid #333;
+      color: white;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: black;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    /* Scratch Card Area */
+    .scratch-container {
+      display: none; /* Hidden until form is submitted */
+      position: relative;
+      width: 300px;
+      height: 150px;
+      margin: 30px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    }
+    .result-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #222;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+    .result-layer h2 {
+      color: var(--gold);
+      font-size: 32px;
+      margin: 0;
+    }
+    .result-layer p {
+      margin: 5px 0 0 0;
+      color: #aaa;
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 2;
+      touch-action: none; /* Prevents scrolling while scratching */
+    }
+    .message-box {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--gold);
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Shri Drift</h1>
+    <p>Premium Roadside Fits</p>
+  </div>
+
+  <div class="container" id="form-panel">
+    <p style="text-align: center; margin-top: 0; font-weight: bold;">Claim Your Reward</p>
+    
+    <label>Mobile Number *</label>
+    <input type="tel" id="mobile" placeholder="Enter 10-digit mobile" required maxlength="10">
+    
+    <label>Your Name</label>
+    <input type="text" id="name" placeholder="What should we call you?">
+    
+    <label>Referred by a friend? (Optional)</label>
+    <input type="tel" id="referral" placeholder="Friend's Mobile No." maxlength="10">
+    <p style="font-size: 11px; color: #888; margin-top: -10px; margin-bottom: 15px;">Enter their number so they get points too!</p>
+    
+    <button id="submit-btn" onclick="processReward()">Verify & Scratch</button>
+    <p id="form-error" style="color: #ff4444; font-size: 12px; text-align: center; display: none;"></p>
+  </div>
+
+  <div class="scratch-container" id="scratch-panel">
+    <div class="result-layer" id="result-text">
+      <!-- Points will be injected here via JS -->
+    </div>
+    <canvas id="scratch-canvas" width="300" height="150"></canvas>
+  </div>
+  
+  <div class="message-box" id="final-message"></div>
+
+  <script>
+    // =========================================================================
+    // PASTE YOUR CLOUDFLARE WORKER URL HERE
+    // =========================================================================
+    const CLOUDFLARE_API = "https://shri-drift-proxy.YOUR_USERNAME.workers.dev";
+
+    // 1. Extract the unique code from the URL (e.g., ?code=cloth-ABCD123)
+    const urlParams = new URLSearchParams(window.location.search);
+    const qrCodeId = urlParams.get('code');
+
+    if (!qrCodeId) {
+      document.getElementById('form-panel').innerHTML = "<p style='text-align:center; color: #ff4444;'>Invalid or missing QR link.</p>";
+    }
+
+    async function processReward() {
+      const mobile = document.getElementById('mobile').value;
+      const name = document.getElementById('name').value;
+      const referral = document.getElementById('referral').value;
+      const btn = document.getElementById('submit-btn');
+      const err = document.getElementById('form-error');
+
+      if (mobile.length < 10) {
+        err.innerText = "Please enter a valid 10-digit mobile number.";
+        err.style.display = "block";
+        return;
+      }
+      err.style.display = "none";
+      btn.innerText = "Verifying...";
+      btn.disabled = true;
+
+      const payload = {
+        action: "scratch",
+        qrId: qrCodeId,
+        mobile: mobile,
+        name: name,
+        referral: referral
+      };
+
+      try {
+        // Hit the Cloudflare proxy
+        const response = await fetch(CLOUDFLARE_API, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain' }
+        });
+
+        const data = await response.json();
+
+        if (data.status === "error") {
+          document.getElementById('form-panel').innerHTML = `<h3 style="text-align:center; color: #ff4444;">${data.message}</h3>`;
+        } else if (data.status === "success") {
+          // Success! Hide form, setup the scratch card
+          document.getElementById('form-panel').style.display = "none";
+          document.getElementById('scratch-panel').style.display = "block";
+          
+          document.getElementById('result-text').innerHTML = `
+            <h2>${data.pointsAwarded} POINTS</h2>
+            <p>Added to your profile!</p>
+          `;
+          
+          initScratchCard();
+        }
+      } catch (error) {
+        err.innerText = "Network error. Make sure you are connected to the internet.";
+        err.style.display = "block";
+        btn.innerText = "Verify & Scratch";
+        btn.disabled = false;
+      }
+    }
+
+    // 2. The HTML5 Canvas Scratch Logic
+    function initScratchCard() {
+      const canvas = document.getElementById('scratch-canvas');
+      const ctx = canvas.getContext('2d');
+      let isDrawing = false;
+
+      // Draw the gold coating
+      ctx.fillStyle = '#D4AF37'; // Gold
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Add text on top of the scratch layer
+      ctx.fillStyle = '#111';
+      ctx.font = 'bold 20px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2 + 7);
+
+      // Easing/Brush settings
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.lineWidth = 35; // Size of the coin scratching
+      
+      // This mode erases whatever is drawn over
+      ctx.globalCompositeOperation = 'destination-out';
+
+      function getBrushPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      }
+
+      function startDraw(e) {
+        isDrawing = true;
+        const pos = getBrushPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      }
+
+      function draw(e) {
+        if (!isDrawing) return;
+        e.preventDefault(); // Stop screen from scrolling on mobile
+        const pos = getBrushPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      }
+
+      function endDraw() {
+        isDrawing = false;
+        checkScratchProgress();
+      }
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', endDraw);
+
+      canvas.addEventListener('touchstart', startDraw, {passive: false});
+      canvas.addEventListener('touchmove', draw, {passive: false});
+      canvas.addEventListener('touchend', endDraw);
+      
+      // Clear the rest of the canvas if they scratched 50% of it
+      function checkScratchProgress() {
+        const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let transparent = 0;
+        for (let i = 3; i < pixels.length; i += 4) {
+          if (pixels[i] === 0) transparent++;
+        }
+        const clearedRatio = transparent / (pixels.length / 4);
+        
+        if (clearedRatio > 0.5) {
+          canvas.style.transition = "opacity 0.5s";
+          canvas.style.opacity = "0";
+          setTimeout(() => canvas.style.display = "none", 500);
+          
+          document.getElementById('final-message').innerText = "Screenshot this and show it at checkout!";
+          document.getElementById('final-message').style.display = "block";
+        }
+      }
+    }
+  </script>
+</body>
+</html>

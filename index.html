@@ -89,6 +89,7 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+      background: #222;
     }
     .result-layer {
       position: absolute;
@@ -148,7 +149,7 @@
     <p id="form-error" style="color: #ff4444; font-size: 12px; text-align: center; display: none;"></p>
   </div>
 
-  <div class="scratch-container" id="scratch-panel">
+  <div class="scratch-container" id="scratch-panel" style="display: none;">
     <div class="result-layer" id="result-text">
       <!-- Points will be injected here via JS -->
     </div>
@@ -158,9 +159,6 @@
   <div class="message-box" id="final-message"></div>
 
   <script>
-    // =========================================================================
-    // YOUR VERIFIED CLOUDFLARE WORKER URL
-    // =========================================================================
     const CLOUDFLARE_API = "https://shri-drift.maynole111.workers.dev/";
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -206,8 +204,10 @@
         if (data.status === "error") {
           document.getElementById('form-panel').innerHTML = `<h3 style="text-align:center; color: #ff4444;">${data.message}</h3>`;
         } else if (data.status === "success") {
+          // Hide input form and forcefully show the scratch panel
           document.getElementById('form-panel').style.display = "none";
-          document.getElementById('scratch-panel').style.display = "block";
+          const scratchPanel = document.getElementById('scratch-panel');
+          scratchPanel.style.display = "block";
           
           document.getElementById('result-text').innerHTML = `
             <h2>${data.pointsAwarded} POINTS</h2>
@@ -217,7 +217,6 @@
           initScratchCard();
         }
       } catch (error) {
-        // Updated error tracker to show exact failure reason
         err.innerText = "SYSTEM ERROR: " + error.message;
         err.style.display = "block";
         btn.innerText = "Verify & Scratch";
